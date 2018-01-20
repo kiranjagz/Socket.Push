@@ -31,7 +31,6 @@ namespace Socket.Push.Mongo
             }
             catch (Exception ex)
             {
-
                 throw;
             }
         }
@@ -44,12 +43,11 @@ namespace Socket.Push.Mongo
                 var update = Builders<PlayerDbModel>.Update.Inc(x => x.TotalWagers, playerDbModel.TotalWagers);
                 var options = new FindOneAndUpdateOptions<PlayerDbModel> { IsUpsert = true };
                 var col = _mongoDatabase.GetCollection<PlayerDbModel>(_mongoSettings.CollectionName);
-                var player = await col.FindOneAndUpdateAsync(filter, update, options);
-                return true;
+                var player = await col.UpdateOneAsync(filter, update);
+                return player.IsAcknowledged;
             }
             catch (Exception ex)
             {
-
                 throw;
             }
         }

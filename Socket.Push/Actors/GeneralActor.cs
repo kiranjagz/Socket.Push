@@ -1,5 +1,6 @@
 ﻿using Akka.Actor;
 using Newtonsoft.Json;
+using Socket.Push.Actors.Ranker;
 using Socket.Push.Mongo;
 using Socket.Push.Mongo.Model;
 using Socket.Push.Socket;
@@ -11,32 +12,40 @@ namespace Socket.Push.Actors
     public class GeneralActor : ReceiveActor
     {
         private IMongoRepository _mongoRepository;
+        private IRankerHandler _rankerHandler;
         private const string _collectionName = "generalmessages";
         private const string _trooperActorName = "trooperActor";
         private ISocketHandler _socketHandler;
 
-        public GeneralActor(IMongoRepository monogRepository, ISocketHandler socketHandler)
+        public GeneralActor(IMongoRepository monogRepository, ISocketHandler socketHandler, IRankerHandler rankerHandler)
         {
+            _rankerHandler = rankerHandler;
             _mongoRepository = monogRepository;
             _socketHandler = socketHandler;
-            //Context.System.Scheduler.ScheduleTellOnce(TimeSpan.FromSeconds(20), Self, new GeneralTimerTrigger.Start(DateTime.Now), ActorRefs.Nobody);
+            Context.System.Scheduler.ScheduleTellRepeatedly(TimeSpan.FromSeconds(30), TimeSpan.FromMinutes(1), Self, new GeneralTimerTrigger.Start(DateTime.Now), ActorRefs.Nobody);
             ReceiveAsync<GeneralMessageModel>(Handle_Message);
-            Receive<GeneralTimerTrigger.Start>(_ => Handle_Trigger(_));
+            ReceiveAsync<GeneralTimerTrigger.Start>(Handle_Trigger);
         }
 
-        private void Handle_Trigger(GeneralTimerTrigger.Start _)
+        private async Task Handle_Trigger(GeneralTimerTrigger.Start _)
         {
+            Console.WriteLine($"Time now is: {DateTime.Now}");
             Console.WriteLine($"Timer schedule did run");
+            var rankerPlayers = await _rankerHandler.RankedPlayers();
+            var playerToJson = Newtonsoft.Json.JsonConvert.SerializeObject(rankerPlayers);
+            Console.WriteLine(playerToJson);
+            _socketHandler.SendData("127.0.0.1", 41181, playerToJson);
         }
 
         private async Task Handle_Message(GeneralMessageModel model)
         {
             var player = JsonConvert.DeserializeObject<PlayerDbModel>(model.EventModel.Body);
             var updatePlayer = await _mongoRepository.UpdatePlayer(player);
-            Console.WriteLine($"Processing player: {JsonConvert.SerializeObject(player)}");
+            Console.WriteLine($"Processing player: {JsonConvert.SerializeObject(updatePlayer)}");
 
-            var getPlayers = await _mongoRepository.GetPlayers();
-            var playerToJson = Newtonsoft.Json.JsonConvert.SerializeObject(getPlayers);
+            var rankerPlayers = await _rankerHandler.RankedPlayers();
+            //var getPlayers = await _mongoRepository.GetPlayers();
+            var playerToJson = Newtonsoft.Json.JsonConvert.SerializeObject(rankerPlayers);
             Console.WriteLine(playerToJson);
             _socketHandler.SendData("127.0.0.1", 41181, playerToJson);
         }

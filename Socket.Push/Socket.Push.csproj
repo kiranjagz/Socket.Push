@@ -96,10 +96,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Actors\FireModel.cs" />
     <Compile Include="Actors\GeneralActor.cs" />
     <Compile Include="Actors\GeneralMessageModel.cs" />
     <Compile Include="Actors\GeneralTimerTrigger.cs" />
+    <Compile Include="Actors\Ranker\IRankerHandler.cs" />
+    <Compile Include="Actors\Ranker\RankedPlayersModel.cs" />
+    <Compile Include="Actors\Ranker\RankerHandler.cs" />
     <Compile Include="IoC\SocketModule.cs" />
     <Compile Include="Mongo\IMongoRepository.cs" />
     <Compile Include="Mongo\IMongoSetting.cs" />
@@ -124,7 +126,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="TestData\json1.json" />
+    <None Include="TestData\player.json" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

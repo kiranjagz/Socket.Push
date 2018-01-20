@@ -1,5 +1,6 @@
 ﻿using Akka.Actor;
 using Socket.Push.Actors;
+using Socket.Push.Actors.Ranker;
 using Socket.Push.Mongo;
 using Socket.Push.Socket;
 using Socket.Push.Subscriber;
@@ -20,11 +21,13 @@ namespace Socket.Push.Root
         private IConnectionBoss _connectionBoss;
         private IMongoRepository _mongoRepository;
         private ISocketHandler _socketHandler;
+        private IRankerHandler _rankerHandler;
         private ISetting _setting;
 
 
-        public Root(IConnectionBoss connectionBoss, ISetting setting, IMongoRepository mongoRepository, ISocketHandler socketHandler)
+        public Root(IConnectionBoss connectionBoss, ISetting setting, IMongoRepository mongoRepository, ISocketHandler socketHandler, IRankerHandler rankerHandler)
         {
+            _rankerHandler = rankerHandler;
             _socketHandler = socketHandler;
             _connectionBoss = connectionBoss;
             _setting = setting;
@@ -34,7 +37,7 @@ namespace Socket.Push.Root
         public bool Start()
         {
             _actorSystem = ActorSystem.Create("System");
-            _generalActor = _actorSystem.ActorOf(Props.Create(() => new GeneralActor(_mongoRepository, _socketHandler)), "GeneralValdez");
+            _generalActor = _actorSystem.ActorOf(Props.Create(() => new GeneralActor(_mongoRepository, _socketHandler, _rankerHandler)), "GeneralValdez");
             SubscriberClient client = new SubscriberClient(_connectionBoss.Connect(), _setting, _generalActor);
             return true;
         }
