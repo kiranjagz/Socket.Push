@@ -19,6 +19,7 @@ namespace Socket.Push.Actors
 
         public GeneralActor(IMongoRepository monogRepository, ISocketHandler socketHandler, IRankerHandler rankerHandler)
         {
+            Console.ForegroundColor = ConsoleColor.Gray;
             _rankerHandler = rankerHandler;
             _mongoRepository = monogRepository;
             _socketHandler = socketHandler;

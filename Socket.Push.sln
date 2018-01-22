@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socket.Push", "Socket.Push\Socket.Push.csproj", "{7FDA86DD-F580-4DFF-A327-F525D2E27312}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rabbit.Publisher", "Rabbit.Publisher\Rabbit.Publisher.csproj", "{D84D6C58-F9B1-402B-A56E-CB7B6A49C05A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{7FDA86DD-F580-4DFF-A327-F525D2E27312}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7FDA86DD-F580-4DFF-A327-F525D2E27312}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7FDA86DD-F580-4DFF-A327-F525D2E27312}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D84D6C58-F9B1-402B-A56E-CB7B6A49C05A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D84D6C58-F9B1-402B-A56E-CB7B6A49C05A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D84D6C58-F9B1-402B-A56E-CB7B6A49C05A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D84D6C58-F9B1-402B-A56E-CB7B6A49C05A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

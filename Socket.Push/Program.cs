@@ -20,18 +20,26 @@ namespace Socket.Push
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Press any key to start, and 'exit' to escape");
-            String data = Console.ReadLine();
-            if (data.Equals("exit", StringComparison.OrdinalIgnoreCase)) return;
-
-            var builder = new ContainerBuilder();
-            builder.RegisterModule<SocketModule>();
-            Container = builder.Build();
-
-            using (var scope = Container.BeginLifetimeScope())
+            try
             {
-                var root = scope.Resolve<IRoot>();
-                root.Start();
+                Console.WriteLine("Press any key to start, and 'exit' to escape");
+                String data = Console.ReadLine();
+                if (data.Equals("exit", StringComparison.OrdinalIgnoreCase)) return;
+                Console.WriteLine("Well heres goes nothing, may the odds be forever in your favour!");
+                Console.ForegroundColor = ConsoleColor.Green;
+                var builder = new ContainerBuilder();
+                builder.RegisterModule<SocketModule>();
+                Container = builder.Build();
+
+                using (var scope = Container.BeginLifetimeScope())
+                {
+                    var root = scope.Resolve<IRoot>();
+                    root.Start();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Oops ze daizy, le system, shes not working, please contact someone who actually cares :): {ex.Message}");
             }
             Console.Read();
         }
