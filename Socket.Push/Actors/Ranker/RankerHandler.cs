@@ -21,7 +21,7 @@ namespace Socket.Push.Actors.Ranker
             var rankedPlayers = players.Select(x => new RankedPlayersModel
             {
                 UserId = x.UserId,
-                Points = CalculatePoints(x.TotalWagers),
+                Points = Convert.ToInt32(CalculatePoints(x.TotalWagers)),
                 Name = x.Name,
                 Surname = x.Surname,
                 Game = x.Game,
