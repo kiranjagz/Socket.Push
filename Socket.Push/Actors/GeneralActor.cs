@@ -33,7 +33,7 @@ namespace Socket.Push.Actors
             Console.WriteLine($"Time now is: {DateTime.Now}");
             Console.WriteLine($"Timer schedule did run");
             var rankerPlayers = await _rankerHandler.RankedPlayers();
-            var playerToJson = Newtonsoft.Json.JsonConvert.SerializeObject(rankerPlayers);
+            var playerToJson = JsonConvert.SerializeObject(rankerPlayers);
             Console.WriteLine(playerToJson);
             _socketHandler.SendData("127.0.0.1", 41181, playerToJson);
         }
@@ -45,8 +45,7 @@ namespace Socket.Push.Actors
             Console.WriteLine($"Processing player: {JsonConvert.SerializeObject(updatePlayer)}");
 
             var rankerPlayers = await _rankerHandler.RankedPlayers();
-            //var getPlayers = await _mongoRepository.GetPlayers();
-            var playerToJson = Newtonsoft.Json.JsonConvert.SerializeObject(rankerPlayers);
+            var playerToJson = JsonConvert.SerializeObject(rankerPlayers);
             Console.WriteLine(playerToJson);
             _socketHandler.SendData("127.0.0.1", 41181, playerToJson);
         }
